@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+Universidade Exemplo
+{% endblock %}
+
+{% block head %}
+<style>
+    #id_email{
+    width: 100%;
+    color: #000000;
+    padding: 5px 5px;
+
+    }
+
+       .fadeout-image {
+        position: relative;
+        display: inline-block; /* ou 'block' dependendo do layout */
+    }
+
+    .fadeout-image img {
+        display: block; /* Remove espaços abaixo da imagem */
+        width: auto; /* ou outra largura conforme necessário */
+        height: auto; /* ou outra altura conforme necessário */
+    }
+
+    .fadeout-image::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle, transparent, black);
+        pointer-events: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <header class="min-h-screen bg-black bg-opacity-75 bg-blend-overlay showcase border-gray-600 border-b-8 flex justify-center items-center bg-no-repeat"  style="background-image: url('{% static 'images/Background_homepage.jpg' %}'); background-size: cover;">
+        <div class="z-10 h-full py-32 md:py-0 text-gray-100 text-center flex items-center flex-col">
+
+            <h1 class="font-semibold text-4xl md:text-5xl w-10/12 md:w-3/4 text-center">
+                Controle de presença da Universidade Exemplo.
+            </h1>
+            <h3 class="text-xl md:text-xl py-5">
+                Mais seguro, mais transparente, sem interrupções.
+            </h3>
+            <h4 class="text-sm md:text-lg pb-3">
+                Para acessar, faça o login.
+            </h4>
+
+
+        </div>
+    </header>
+
+    <section class='flex flex-col md:flex-row items-center border-gray-900 border-b-8' style="min-height: 70vh;">
+        <div class="md:w-1/2 flex flex-col justify-center text-center md:text-left p-5 md:p-10 ">
+            <h2 class="md:text-5xl text-4xl font-semibold mb-4">
+                Zero espera, todo CONHECIMENTO.
+            </h2>
+            <h5 class="md:text-xl text-lg">
+                Nada de esperas tediosas, pule direto para o banquete do conhecimento
+            </h5>
+        </div>
+         <div class='fadeout-image'>
+            <img src="{% static 'images/zeroespera.jpg' %}" class="w-8/12" alt="">
+        </div>
+    </section>
+
+    <section class='flex flex-col md:flex-row items-center border-gray-900 border-b-8' style="min-height: 70vh;">
+         <div class='fadeout-image'>
+            <img src="{% static 'images/acessototal.jpg' %}" class="w-8/12" alt="">
+        </div>
+
+        <div class="md:w-1/2 flex flex-col justify-center text-center md:text-left p-5 md:p-10">
+            <h2 class="md:text-5xl text-4xl font-semibold mb-4">
+                Acesso para todos os usuários.
+            </h2>
+            <h5 class="md:text-xl text-lg">
+                Não haverá mais a pergunta "quantas faltas eu tenho, professor?"
+            </h5>
+        </div>
+
+    </section>
+
+    <section class='flex flex-col md:flex-row items-center border-gray-900 border-b-8' style="min-height: 70vh;">
+        <div class="md:w-1/2 flex flex-col justify-center text-center md:text-left p-5 md:p-10">
+            <h2 class="md:text-5xl text-4xl font-semibold mb-4">
+                 Liberdade das Chamadas Eternas.
+            </h2>
+            <h5 class="md:text-xl text-lg">
+                Nada de ficar "presente" três vezes antes do café da manhã. Seu tempo é valioso e deve ser usado para aprender
+            </h5>
+        </div>
+        <div class='fadeout-image'>
+            <img src="{% static 'images/tempo.jpg' %}" class="w-8/12" alt="">
+        </div>
+    </section>
+    <footer class=" px-5 py-10 ">
+        <ul class="flex justify-between items-center">
+
+            <li>&copy; 2023</li>
+            <li> Feito com Python (Django)</li>
+            <li>Khrissye Teixeira</li>
+        </ul>
+    </footer>
+
+{% endblock %}

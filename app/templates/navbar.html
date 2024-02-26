@@ -1,0 +1,30 @@
+{% load static %}
+
+<style>
+    .navbar {
+        height: 80px; /* Defina a altura desejada, por exemplo, 80 pixels */
+        background-color: #192f60; /* Cor de fundo azul marinho */
+        color: #192f60; /* Cor do texto branco */
+    }
+</style>
+
+<nav class="w-full flex justify-between items-center py-3 px-4 fixed z-50">
+    <div class="w-6/12">
+        <a href="">
+           <img class="w-2/12" src="{% static 'images/logo (2).png' %}">
+        </a>
+    </div>
+    <div class="w-6/12 flex flex-nowrap justify-end">
+    <div class="mr-2">
+        <a href="login">
+            <button class="bg-white font-bold py-1 px-3 rounded-md transform transition-transform hover:scale-105" style="color: #192f60;">
+                Login
+            </button>
+        </a>
+    </div>
+
+    </div>
+</nav>
+
+
+

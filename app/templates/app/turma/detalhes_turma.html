@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes da Turma</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <style>
+        .navbar {
+            height: 80px; /* Altura da barra de navegação */
+            background-color: #192f60; /* Cor de fundo */
+        }
+        .navbar-logo {
+            height: 60px; /* Altura da logo */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding-top: 80px; /* Espaço para a barra de navegação */
+        }
+        .presente { color: green; font-weight: bold; }
+        .ausente { color: red; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 5px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'lista_turmas_professor' matricula=turma.professor.matricula %}">
+            <img src="{% static 'images/logo (2).png' %}" alt="Logo" class="navbar-logo">
+        </a>
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'alterar-senha' %}" class="btn btn-outline-light">Editar Perfil</a>
+        </div>
+    </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <p>Departamento: {{ turma.departamento }}</p>
+        <p>Professor: {{ turma.professor.nome }}</p>
+        <br>
+        <br>
+        <a href="{% url 'abrir_aula' turma.codigo %}" class="btn btn-primary">Adicionar Nova Aula</a>
+        <br>
+        <br>
+
+        <table class="table">
+            <tr>
+                <th>Aluno</th>
+                {% for aula in aulas %}
+                    <th>{{ aula.data }}</th>
+                {% endfor %}
+                <th>Presenças / Aulas</th>
+                <th>Porcentagem de Presença</th>
+            </tr>
+            {% for aluno in alunos %}
+                <tr>
+                    <td>{{ aluno.nome }} - Matrícula: {{ aluno.matricula }}</td>
+                    {% for aula in aulas %}
+                        {% for presenca in aula.presencas_list %}
+                            {% if presenca.aluno.id == aluno.id %}
+                                <td class="{% if presenca.presente %}presente{% else %}ausente{% endif %}">
+                                    {% if presenca.presente %}Presente{% else %}Ausente{% endif %}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    <td>{{ aluno.presencas_count }} / {{ total_aulas }}</td>
+                    <td>{{ aluno.presenca_percentual|floatformat:2 }}%</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+        <div class="text-center my-4">
+            <button onclick="gerarPDF()" class="btn btn-primary">Gerar PDF</button>
+        </div>
+
+
+    <script>
+    function gerarPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Adicionando informações sobre a turma, professor e departamento
+        let cabecalho = `Turma: {{ turma.nome }}\nProfessor: {{ turma.professor.nome }}\nDepartamento: {{ turma.departamento }}\n\n`;
+
+        // Adicionando os dados dos alunos
+        let dadosAlunos = 'Nome; Matrícula; Porcentagem de Presença\n';
+        document.querySelectorAll('.table tr').forEach((row, index) => {
+            if (index !== 0) { // Ignora o cabeçalho da tabela
+                let nome = row.cells[0].innerText;
+                let porcentagem = row.cells[row.cells.length - 1].innerText;
+                dadosAlunos += `${nome}; ${porcentagem}\n`;
+            }
+        });
+
+        // Adicionando a data e hora da impressão e a frase indicativa
+        let rodape = `\nEsse PDF é gerado automaticamente pelo usuário\nData e Hora da Impressão: ${new Date().toLocaleString()}`;
+
+        // Combinando todas as partes para o conteúdo do PDF
+        let conteudo = cabecalho + dadosAlunos + rodape;
+
+        let linhas = doc.splitTextToSize(conteudo, 180);
+        doc.text(linhas, 10, 10);
+        doc.save('ListaDePresenca.pdf');
+    }
+    </script>
+</body>
+</html>
